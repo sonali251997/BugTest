@@ -1,126 +1,87 @@
 import React, { Component } from "react";
-import { FormBuilder as FormBuilderIo } from "react-formio";
+
+import { Form, FormBuilder } from "react-formio";
+
 // import JsonData from "./jsonData";
 import "react-form-builder2/dist/app.css";
 import "formiojs/dist/formio.full.css";
 import { browserHistory } from "react-router";
 
-class FormIndex extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      formData: {
-        name: "", // Initialize the name field with an empty string
-      },
-    };
-  }
-
-  handleNameChange = (event) => {
-    console.log("event",event)
-    const { name, value } = event.target;
-    this.setState((prevState) => ({
-      formData: {
-        ...prevState.formData,
-        [name]: value, // Update the 'name' field in the form data with the entered value
-      },
-    }));
-  };
-
-  handleSubmit = (event) => {
+const FormIndex = () => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     // Perform any form submission logic here, e.g., sending data to the server
     console.log("Form data submitted:", this.state.formData);
   };
+  const onChangeValue = (component, value) => {
+    this.setState((prevState) => ({
+      formData: {
+        ...prevState.formData,
+        [component.key]: value,
+      },
+    }));
+  };
 
-  handleClick = () => {
+  const onSubmit = (submission) => {
+    console.log("Form Submission Data:", submission.data);
+    const jsonData = JSON.stringify(submission.data, null, 2);
+    console.log("Generated JSON:", jsonData);
+  };
+  const handleClick = () => {
     browserHistory.push("/next-page");
   };
 
-  render() {
-    return (
-      <div className="App">
-        <h2>Form builder</h2>
+  const handleFormSubmit = (submission) => {
+    console.log("Form Data on Submit:", submission.data);
+    // Handle form data on submit (e.g., send to server, perform actions, etc.)
+  };
 
-        <div id="formio"></div>
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            Name:
-            <input
-              type="text"
-              name="name"
-              value={this.state.formData.name}
-              onChange={this.handleNameChange}
-            />
-          </label>
-          <button type="submit">Submit</button>
-        </form>
+  const initialForm = {
+    display: "form",
+    components: [
+      {
+        type: "textfield",
+        label: "First Name",
+        key: "firstName",
+        input: true,
+        inputType: "text",
+      },
+      {
+        type: "textfield",
+        label: "Last Name",
+        key: "lastName",
+        input: true,
+        inputType: "text",
+      },
+      // Add more form components as needed...
+    ],
+  };
 
-        <FormBuilderIo
-          form={{
-            onsubmit:this.handleSubmit,
-            display: "form",
-            components: [
-              {
-                type: "textfield",
-                label: "Name",
-                key: "name",
-                input: true,
-                value:this.state.formData.name,
-                onChange:this.handleNameChange
-               
-              },
-              
-              {
-                type: "button",
-                label: "Submit",
-                key: "submit",
-                input: true,
-                // value:this.state.formData.name,
-                // onChange:this.handleNameChange
-              },
-              
-            ],
-          }}
-          onChange={(schema) => console.log(JSON.stringify(schema))}
-          options={{
-            builder: {
-              advanced: false,
-              data: false,
-              custom: {
-                title: "Pre-Defined Fields",
-                weight: 10,
-                components: {
-                  firstName: {
-                    title: "First Name",
-                    key: "firstName",
-                    icon: "terminal",
-                    schema: {
-                      label: "First Name",
-                      type: "textfield",
-                      key: "firstName",
-                      input: true,
-                    },
-                  },
-                  lastName: {
-                    title: "Last Name",
-                    key: "lastName",
-                    icon: "terminal",
-                    schema: {
-                      label: "Last Name",
-                      type: "textfield",
-                      key: "lastName",
-                      input: true,
-                    },
-                  },
-                },
-              },
-            },
-          }}
-        />
-        <button onClick={this.handleClick}>Submit</button>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="App">
+      <h2>Form builder</h2>
+
+      <div id="formio"></div>
+
+      <FormBuilder
+        form={{
+          display: "form",
+          onSubmit: { handleFormSubmit },
+        }}
+        // onChange={(schema) => console.log(JSON.stringify(schema))}
+        onSaveComponent={(b) => console.log(b)}
+        onUpdateComponent={(b) => console.log(b)}
+        onDeleteComponent={(c) => console.log(c)}
+        onCancelComponent={(d) => console.log(d)}
+        onAction={() => console.log("check 2")}
+        onSubmit={handleFormSubmit}
+      />
+      {/* <Form form={initialForm} onSubmit={handleFormSubmit}>
+        <FormBuilder />
+        <button type="submit">Submit</button>
+      </Form> */}
+    </div>
+  );
+};
 
 export default FormIndex;
