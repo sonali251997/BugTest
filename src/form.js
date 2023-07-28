@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { Form, FormBuilder } from "react-formio";
+import { Form, FormBuilder, Formio } from "react-formio";
 
 // import JsonData from "./jsonData";
 import "react-form-builder2/dist/app.css";
@@ -31,10 +31,10 @@ const FormIndex = () => {
     browserHistory.push("/next-page");
   };
 
-  const handleFormSubmit = (submission) => {
-    console.log("Form Data on Submit:", submission.data);
-    // Handle form data on submit (e.g., send to server, perform actions, etc.)
-  };
+  // const handleFormSubmit = (submission) => {
+  //   console.log("Form Data on Submit:", submission.data);
+  //   // Handle form data on submit (e.g., send to server, perform actions, etc.)
+  // };
 
   const initialForm = {
     display: "form",
@@ -66,20 +66,9 @@ const FormIndex = () => {
       <FormBuilder
         form={{
           display: "form",
-          onSubmit: { handleFormSubmit },
         }}
-        // onChange={(schema) => console.log(JSON.stringify(schema))}
-        onSaveComponent={(b) => console.log(b)}
-        onUpdateComponent={(b) => console.log(b)}
-        onDeleteComponent={(c) => console.log(c)}
-        onCancelComponent={(d) => console.log(d)}
-        onAction={() => console.log("check 2")}
-        onSubmit={handleFormSubmit}
+        onChange={(schema) => console.log(schema)}
       />
-      {/* <Form form={initialForm} onSubmit={handleFormSubmit}>
-        <FormBuilder />
-        <button type="submit">Submit</button>
-      </Form> */}
     </div>
   );
 };
