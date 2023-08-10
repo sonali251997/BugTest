@@ -31,10 +31,10 @@ const FormIndex = () => {
     browserHistory.push("/next-page");
   };
 
-  // const handleFormSubmit = (submission) => {
-  //   console.log("Form Data on Submit:", submission.data);
-  //   // Handle form data on submit (e.g., send to server, perform actions, etc.)
-  // };
+  const handleFormSubmit = (submission) => {
+    console.log("Form Data on Submit:", submission.data);
+    // Handle form data on submit (e.g., send to server, perform actions, etc.)
+  };
 
   const initialForm = {
     display: "form",
@@ -66,9 +66,36 @@ const FormIndex = () => {
       <FormBuilder
         form={{
           display: "form",
+          components: [
+            {
+              input: true,
+              key: "textField",
+              tableView: true,
+              label: "First Name",
+              type: "textfield",
+              placeholder: "sonali",
+              disabled: true,
+            },
+            {
+              input: true,
+              key: "textField",
+              tableView: true,
+              label: "Last Name",
+              type: "textfield",
+            },
+            {
+              input: true,
+              key: "number",
+              tableView: true,
+              label: "Number",
+              type: "number",
+              numberField: 234,
+            },
+          ],
         }}
         onChange={(schema) => console.log(schema)}
       />
+      <button onClick={handleClick}>Submit</button>
     </div>
   );
 };
