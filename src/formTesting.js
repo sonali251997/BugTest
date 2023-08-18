@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import { Link } from "react-router";
 import { Formio } from "react-formio";
 
 // import "./app.css";
@@ -11,14 +11,23 @@ import "bootstrap/dist/css/bootstrap.css";
 class FormTesting extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      value: "",
+    };
+    this.inc = this.inc.bind(this);
   }
+
+  inc(d) {
+    this.setState(d);
+  }
+
   componentDidMount() {
     Formio.builder(
       document.getElementById("builder"),
       {},
       {
         builder: {
-          advanced: false,
+          premium: false,
           data: false,
           layout: false,
         },
@@ -31,15 +40,15 @@ class FormTesting extends Component {
 
           // Form Renderer Event Handling
           instance.on("change", function () {
-            // const arrayOfObjects = ["input", "key", "placeholder"];
-            instance.form.components.push(instance.submission.data);
-              (json.innerHTML = "");
+            instance.form.components.data = instance.submission.data;
+            json.innerHTML = "";
             json.appendChild(
-              document.createTextNode(JSON.stringify(instance.form.components, null, 4))
+              document.createTextNode(
+                JSON.stringify(instance.form.components, null, 4)
+              )
             );
             console.log("instance", instance);
             console.log(instance.submission.data);
-            // console.log(instance.form.components);
           });
           // Form Builder Event Handling
           builder.on("change", (schema) => {
@@ -60,7 +69,13 @@ class FormTesting extends Component {
           <div class="card card-body bg-light">
             <div id="builder"></div>
           </div>
-          <h4 style={{ margin: "20px 0px" }}>Rendered Form</h4>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <h4 style={{ margin: "20px 0px" }}>Rendered Form</h4>
+            <Link to="/render-form">
+              <button>Render Form: {this.state.value}</button>
+            </Link>
+          </div>
+
           <div class="card card-body bg-light">
             <div id="formio"></div>
           </div>
