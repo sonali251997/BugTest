@@ -51,6 +51,7 @@ class FormTesting extends Component {
             console.log(instance.submission.data);
           });
           // Form Builder Event Handling
+
           builder.on("change", (schema) => {
             if (schema.components) {
               instance.resetValue();
